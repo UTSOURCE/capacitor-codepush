@@ -8,6 +8,8 @@ This plugin provides client-side integration for the [CodePush service](https://
 
 <!-- Capacitor Catalog -->
 
+
+
 * [How does it work?](#how-does-it-work)
 * [Supported Capacitor Platforms](#supported-capacitor-platforms)
 * [Getting Started](#getting-started)
