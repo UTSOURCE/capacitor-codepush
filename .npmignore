@@ -1,0 +1,10 @@
+.npmignore
+.gitignore
+.commitlintrc.json
+.releaserc.json
+gulpfile.js
+node_modules/*
+samples/*
+test/*
+www/*
+bin/test/*
