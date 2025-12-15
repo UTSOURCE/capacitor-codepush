@@ -82,6 +82,9 @@ export class FileUtil {
                 if (await FileUtil.directoryExists(source.directory, source.path)) { // is directory
                     await FileUtil.copyDirectoryEntriesTo(source, destination);
                 } else { // is file
+                    if (await FileUtil.fileExists(destination.directory, destination.path)) {
+                        await Filesystem.deleteFile({ directory: destination.directory, path: destination.path });
+                    }
                     await FileUtil.copy(source, destination);
                 }
             }
