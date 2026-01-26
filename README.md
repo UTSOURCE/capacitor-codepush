@@ -17,12 +17,17 @@ I simplified this documentation to provide a quick Getting Started. For any doub
 
 ## Install the plugin to your Capacitor project
 
+#### Capacitor 8
+```
+npm i cap-codepush@8
+```
+
+### Previous versions
 #### Capacitor 7
 ```
 npm i cap-codepush@7
 ```
 
-### Previous versions
 Old naming convention
 
 #### Capacitor 6

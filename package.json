@@ -1,7 +1,7 @@
 {
   "name": "cap-codepush",
-  "version": "7.0.2",
-  "description": "CodePush Plugin for Capacitor. Working with Capacitor 7.",
+  "version": "8.0.0",
+  "description": "CodePush Plugin for Capacitor. Working with Capacitor 8.",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "homepage": "https://github.com/gianluigitrontini/capacitor-codepush",
@@ -64,10 +64,10 @@
     "code-push": "^4.0.2"
   },
   "peerDependencies": {
-    "@capacitor/core": "^7.0.0",
-    "@capacitor/device": "^7.0.0",
-    "@capacitor/dialog": "^7.0.0",
-    "@capacitor/filesystem": "^7.0.0"
+    "@capacitor/core": "^8.0.0",
+    "@capacitor/device": "^8.0.0",
+    "@capacitor/dialog": "^8.0.0",
+    "@capacitor/filesystem": "^8.0.0"
   },
   "capacitor": {
     "android": {
