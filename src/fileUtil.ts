@@ -72,11 +72,9 @@ export class FileUtil {
         if (await FileUtil.directoryExists(destinationDir.directory, destinationDir.path)) {
             const { files } = await Filesystem.readdir(sourceDir);
             for (let i = 0; i < files.length; i++) {
-                const fileEntry = files[i];
-                // 兼容 @capacitor/filesystem v6+: readdir 返回的 files 从 string[] 变为 FileInfo[] 对象数组
-                // v6 之前返回 string[], v6+ 返回 FileInfo[] (包含 name, type, size 等属性)
-                const file = typeof fileEntry === 'string' ? fileEntry : fileEntry.name;
-                if (ignoreList.indexOf(file) !== -1) continue;
+                const file = files[i];
+                // @ts-ignore
+                if (ignoreList.includes(file)) continue;
                 const sourcePath = sourceDir.path + "/" + file;
                 const destPath = destinationDir.path + "/" + file;
                 const source = { ...sourceDir, path: sourcePath };
@@ -84,9 +82,6 @@ export class FileUtil {
                 if (await FileUtil.directoryExists(source.directory, source.path)) { // is directory
                     await FileUtil.copyDirectoryEntriesTo(source, destination);
                 } else { // is file
-                    if (await FileUtil.fileExists(destination.directory, destination.path)) {
-                        await Filesystem.deleteFile({ directory: destination.directory, path: destination.path });
-                    }
                     await FileUtil.copy(source, destination);
                 }
             }
