@@ -12,12 +12,18 @@
 #import "UpdateHashUtils.h"
 #import "Utilities.h"
 #import <Capacitor/Capacitor.h>
-#if __has_include(<ZipArchive/ZipArchive.h>)
-#import <ZipArchive/ZipArchive.h>
-#elif __has_include(<SSZipArchive/SSZipArchive.h>)
-#import <SSZipArchive/SSZipArchive.h>
+#if __has_include("CodePushZipFoundation-Swift.h")
+#import "CodePushZipFoundation-Swift.h"
+#elif __has_include(<CodePushZipFoundation/CodePushZipFoundation-Swift.h>)
+#import <CodePushZipFoundation/CodePushZipFoundation-Swift.h>
+#elif __has_feature(modules)
+@import CodePushZipFoundation;
+#elif __has_include("CapCodepush-Swift.h")
+#import "CapCodepush-Swift.h"
+#elif __has_include(<CapCodepush/CapCodepush-Swift.h>)
+#import <CapCodepush/CapCodepush-Swift.h>
 #else
-@import ZipArchive;
+#error "Unable to import generated Swift header for ZipHelper."
 #endif
 
 @interface CodePushPlugin () <UIScrollViewDelegate>
@@ -585,15 +591,15 @@ StatusReport *rollbackStatusReport = nil;
   NSURL *unzipURL = [NSURL URLWithString:unzipPath];
   // https://stackoverflow.com/questions/37564303/unzip-a-file-using-ssziparchive-not-extracting-the-contents-of-the-file
   // It require NSURL path (not absoluteString - start with file://)
-  BOOL result = [SSZipArchive unzipFileAtPath:zipURL.path
-                                toDestination:unzipURL.path
-                                    overwrite:YES
-                                     password:nil
-                                        error:nil];
+  NSError *error = nil;
+  BOOL result = [ZipHelper unzipAt:zipURL.path
+                                to:unzipURL.path
+                         overwrite:YES
+                             error:&error];
   if (result) {
     [call resolve];
   } else {
-    [call reject:@"Failed to unzip":nil:nil:@{}];
+    [call reject:@"Failed to unzip":nil:error:@{}];
   }
 }
 

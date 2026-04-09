@@ -10,16 +10,23 @@ let package = Package(
             targets: ["CodePushPlugin"])
     ],
     dependencies: [
-        .package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", exact: "8.1.0"),
-        .package(url: "https://github.com/ZipArchive/ZipArchive.git", "2.4.0"..<"2.5.0")
+        .package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", from: "8.0.0"),
+        .package(url: "https://github.com/weichsel/ZIPFoundation.git", .upToNextMinor(from: "0.9.20"))
     ],
     targets: [
+        .target(
+            name: "CodePushZipFoundation",
+            dependencies: [
+                .product(name: "ZIPFoundation", package: "ZIPFoundation")
+            ],
+            path: "ios/ZipFoundationSupport"
+        ),
         .target(
             name: "CodePushPlugin",
             dependencies: [
                 .product(name: "Capacitor", package: "capacitor-swift-pm"),
                 .product(name: "Cordova", package: "capacitor-swift-pm"),
-                .product(name: "ZipArchive", package: "ZipArchive")
+                "CodePushZipFoundation"
             ],
             path: "ios/Plugin",
             publicHeadersPath: "include",
