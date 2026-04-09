@@ -5,6 +5,8 @@ node_modules/
 
 #ignore the compiled files
 bin/*
+.build/
+build/
 
 #ignore the test output files
 test-*
