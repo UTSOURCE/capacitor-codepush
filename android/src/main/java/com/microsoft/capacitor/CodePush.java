@@ -15,6 +15,7 @@ import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jwt.SignedJWT;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -180,6 +181,27 @@ public class CodePush extends Plugin {
         } else {
             call.resolve(jsObjectValue(cachedBinaryHash));
         }
+    }
+
+    @PluginMethod()
+    public void getDataEntryType(PluginCall call) {
+        String relativePath = call.getString("path");
+        JSObject ret = new JSObject();
+
+        if (relativePath == null) {
+            ret.put("value", JSONObject.NULL);
+            call.resolve(ret);
+            return;
+        }
+
+        File target = new File(getContext().getFilesDir(), relativePath);
+        if (!target.exists()) {
+            ret.put("value", JSONObject.NULL);
+        } else {
+            ret.put("value", target.isDirectory() ? "directory" : "file");
+        }
+
+        call.resolve(ret);
     }
 
     @PluginMethod()

@@ -1,12 +1,22 @@
 import { Directory, GetUriOptions, Filesystem, Encoding } from "@capacitor/filesystem";
 import { Callback } from "./callbackUtil";
+import { CodePush as NativeCodePush } from "./nativeCodePushPlugin";
 
 
 /**
  * File utilities for CodePush.
  */
 export class FileUtil {
+    private static async getDataEntryType(path: string): Promise<string | null> {
+        const result = await NativeCodePush.getDataEntryType({ path });
+        return result.value ?? null;
+    }
+
     public static async directoryExists(directory: Directory, path: string): Promise<boolean> {
+        if (directory === Directory.Data) {
+            return (await FileUtil.getDataEntryType(path)) === "directory";
+        }
+
         try {
             const statResult = await Filesystem.stat({ directory, path });
             // directory for Android, NSFileTypeDirectory for iOS
@@ -22,6 +32,10 @@ export class FileUtil {
     }
 
     public static async fileExists(directory: Directory, path: string): Promise<boolean> {
+        if (directory === Directory.Data) {
+            return (await FileUtil.getDataEntryType(path)) === "file";
+        }
+
         try {
             const statResult = await Filesystem.stat({ directory, path });
             // file for Android, NSFileTypeRegular for iOS

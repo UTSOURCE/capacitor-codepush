@@ -338,6 +338,30 @@ StatusReport *rollbackStatusReport = nil;
   [call resolve:@{@"value" : timeStamp}];
 }
 
+- (void)getDataEntryType:(CAPPluginCall *)call {
+  NSString *relativePath = [self getString:call field:@"path" defaultValue:nil];
+  if (relativePath == nil) {
+    [call resolve:@{@"value" : [NSNull null]}];
+    return;
+  }
+
+  NSString *documentsDirectory =
+      NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask,
+                                          YES)[0];
+  NSString *absolutePath =
+      [documentsDirectory stringByAppendingPathComponent:relativePath];
+  BOOL isDirectory = NO;
+  BOOL exists =
+      [[NSFileManager defaultManager] fileExistsAtPath:absolutePath
+                                           isDirectory:&isDirectory];
+  if (!exists) {
+    [call resolve:@{@"value" : [NSNull null]}];
+    return;
+  }
+
+  [call resolve:@{@"value" : isDirectory ? @"directory" : @"file"}];
+}
+
 - (void)sendResultForPreference:(NSString *)preferenceName
                            call:(CAPPluginCall *)call {
   NSString *preferenceValue = [self getConfigValue:preferenceName];
